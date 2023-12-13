@@ -1,2 +1,3 @@
 export * from './immutable-entity'
-export * from './init'
+export * from './immutable-entity-builder'
+export * from './immutable-entity-manager'

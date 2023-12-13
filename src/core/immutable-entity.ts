@@ -1,22 +1,14 @@
-import { type KindOfClass } from './bridge'
-import { MetadataKeys } from './metadata-keys'
-import { type ImmutableEntityInitType } from './init'
 import 'reflect-metadata'
-import { type ImmutableEntityOptions } from './immutable-entity-options'
+import { type KindOfClass } from './bridge'
 import { buildImmutableEntityConstructor } from './immutable-entity-constructor'
 
-export interface KindOfImmutableEntity<T> extends KindOfClass<T> {
-  init: ImmutableEntityInitType<T>
+export interface KindOfImmutableEntity<T = unknown> extends KindOfClass<T> {
 }
 
-export function ImmutableEntity (options: ImmutableEntityOptions = {
-  snakeToCamelCase: true,
-  camelToSnakeCase: false
-}): ClassDecorator {
+export function ImmutableEntity (): ClassDecorator {
   return function (target) {
-    Reflect.defineMetadata(MetadataKeys.ClassType, target, target)
     const OriginalClass = target as unknown as KindOfClass<unknown>
-    const immutableEntityConstructor: any = buildImmutableEntityConstructor(OriginalClass, options)
+    const immutableEntityConstructor: any = buildImmutableEntityConstructor(OriginalClass)
     immutableEntityConstructor.prototype = OriginalClass.prototype
     return immutableEntityConstructor
   }

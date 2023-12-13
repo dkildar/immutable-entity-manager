@@ -1,1 +1,1 @@
-export type KindOfClass<T> = new (...args: any[]) => T
+export type KindOfClass<T = unknown> = new(...args: any[]) => T
