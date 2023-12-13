@@ -11,7 +11,7 @@ class Person {
   @ImmutableEntityTyped(Date) readonly birthDate!: Date
 }
 
-describe('Test initialization', () => {
+describe('Positive tests', () => {
   test('should parse simple data', () => {
     const person = ImmutableEntityManager
       .getUniqueManager(Person)
@@ -59,5 +59,17 @@ describe('Test initialization', () => {
       .build()
 
     expect(person.age).toBe(0)
+  })
+
+  test('should parse and return typed non-immutable entityх property value', () => {
+    const person = ImmutableEntityManager
+      .getUniqueManager(Person)
+      .parseFromJson({
+        first_name: 'hello',
+        birth_date: new Date().toISOString()
+      })
+      .build()
+
+    expect(person.birthDate).toBeInstanceOf(Date)
   })
 })

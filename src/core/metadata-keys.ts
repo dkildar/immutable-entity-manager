@@ -1,6 +1,6 @@
 export enum MetadataKeys {
-  ClassType = 'design:type',
-  Options = 'design:options',
+  ImmutableEntity = 'design:immutable-entity',
   Transients = 'design:transients',
-  Defaults = 'design:defaults'
+  Defaults = 'design:defaults',
+  Typed = 'design:typed'
 }
