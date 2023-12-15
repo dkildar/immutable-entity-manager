@@ -103,3 +103,4 @@ builder.withOptions({ camelToSnakeCase: true })
 
 [MIT](https://choosealicense.com/licenses/mit/)
 
+![Alt](https://repobeats.axiom.co/api/embed/1a4ff13569e6c9267a67f6bbcf2b17b98507d9e7.svg "Repobeats analytics image")
