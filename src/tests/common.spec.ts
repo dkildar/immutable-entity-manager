@@ -3,12 +3,20 @@ import { ImmutableEntityDefaultValue, ImmutableEntityTransient, ImmutableEntityT
 import { describe, expect, test } from '@jest/globals'
 
 @ImmutableEntity()
+class Pet {
+  readonly name!: string
+}
+
+@ImmutableEntity()
 class Person {
   readonly firstName!: string
   readonly lastName!: string
+  readonly first_name!: string
+  readonly last_name!: string
   @ImmutableEntityTransient() readonly middleName!: string
   @ImmutableEntityDefaultValue(0) readonly age!: number
   @ImmutableEntityTyped(Date) readonly birthDate!: Date
+  @ImmutableEntityTyped(Pet) readonly pet!: Pet
 }
 
 describe('Positive tests', () => {
@@ -22,6 +30,30 @@ describe('Positive tests', () => {
       .build()
     expect(person.firstName).toBe('hello')
     expect(person.lastName).toBe('world')
+  })
+
+  test('should apply options', () => {
+    let person = ImmutableEntityManager
+      .getUniqueManager(Person)
+      .parseFromJson({
+        first_name: 'hello',
+        last_name: 'world'
+      })
+      .withOptions({ snakeToCamelCase: true })
+      .build()
+    expect(person.firstName).toBe('hello')
+    expect(person.lastName).toBe('world')
+
+    person = ImmutableEntityManager
+      .getUniqueManager(Person)
+      .parseFromJson({
+        firstName: 'hello',
+        lastName: 'world'
+      })
+      .withOptions({ camelToSnakeCase: true })
+      .build()
+    expect(person.first_name).toBe('hello')
+    expect(person.last_name).toBe('world')
   })
 
   test('should set properties', () => {
@@ -61,7 +93,7 @@ describe('Positive tests', () => {
     expect(person.age).toBe(0)
   })
 
-  test('should parse and return typed non-immutable entityх property value', () => {
+  test('should parse and return typed non-immutable entity property value', () => {
     const person = ImmutableEntityManager
       .getUniqueManager(Person)
       .parseFromJson({
@@ -71,5 +103,21 @@ describe('Positive tests', () => {
       .build()
 
     expect(person.birthDate).toBeInstanceOf(Date)
+  })
+
+  test('should parse and return typed immutable entity property value', () => {
+    const person = ImmutableEntityManager
+      .getUniqueManager(Person)
+      .parseFromJson({
+        first_name: 'hello',
+        birth_date: new Date().toISOString(),
+        pet: {
+          name: 'Ellie'
+        }
+      })
+      .build()
+
+    expect(person.pet).toBeInstanceOf(Pet)
+    expect(person.pet.name).toBe('Ellie')
   })
 })
