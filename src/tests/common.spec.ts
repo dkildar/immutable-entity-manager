@@ -3,6 +3,17 @@ import { ImmutableEntityDefaultValue, ImmutableEntityTransient, ImmutableEntityT
 import { describe, expect, test } from '@jest/globals'
 
 @ImmutableEntity()
+class Vehicle {
+  readonly engine!: 'diesel' | 'petrol'
+}
+
+@ImmutableEntity()
+class Car {
+  readonly brand!: string
+  @ImmutableEntityTyped(Vehicle) readonly type!: Vehicle
+}
+
+@ImmutableEntity()
 class Pet {
   readonly name!: string
 }
@@ -17,6 +28,7 @@ class Person {
   @ImmutableEntityDefaultValue(0) readonly age!: number
   @ImmutableEntityTyped(Date) readonly birthDate!: Date
   @ImmutableEntityTyped(Pet) readonly pet!: Pet
+  @ImmutableEntityTyped(Car) readonly car!: Car
 }
 
 describe('Positive tests', () => {
@@ -119,5 +131,24 @@ describe('Positive tests', () => {
 
     expect(person.pet).toBeInstanceOf(Pet)
     expect(person.pet.name).toBe('Ellie')
+  })
+
+  test('should parse and return multiple typed levels immutable entity property', () => {
+    const person = ImmutableEntityManager
+      .getUniqueManager(Person)
+      .parseFromJson({
+        car: {
+          brand: 'audi',
+          type: {
+            engine: 'petrol'
+          }
+        }
+      })
+      .build()
+
+    expect(person.car).toBeInstanceOf(Car)
+    expect(person.car.brand).toBe('audi')
+    expect(person.car.type).toBeInstanceOf(Vehicle)
+    expect(person.car.type.engine).toBe('petrol')
   })
 })

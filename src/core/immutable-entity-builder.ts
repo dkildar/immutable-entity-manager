@@ -43,27 +43,29 @@ export class ImmutableEntityBuilder<T extends KindOfImmutableEntity> {
   }
 
   private processData (data: typeof this.data): Data {
-    const transientProperties = Reflect.getMetadata(MetadataKeys.Transients, this.Type.prototype) as Set<string>
-    const typedProperties = Reflect.getMetadata(MetadataKeys.Typed, this.Type.prototype) as Map<string, KindOfClass<T>>
+    const transientProperties = Reflect.getMetadata(MetadataKeys.Transients, this.Type.prototype) as Set<string> | undefined
+    const typedProperties = Reflect.getMetadata(MetadataKeys.Typed, this.Type.prototype) as Map<string, KindOfClass<T>> | undefined
 
     return Object.entries(data)
-      .filter(([property, _]) => !transientProperties.has(property))
+      .filter(([property, _]) => transientProperties instanceof Map ? transientProperties.has(property) : true)
       .concat(Object.entries(this.getDefaults()))
       .reduce((acc, [property, value]) => this.transformProperty(property, value.value, value.applyDecorators, typedProperties, acc), {})
   }
 
   private getDefaults (): Data {
-    const defaults = Reflect.getMetadata(MetadataKeys.Defaults, this.Type.prototype) as Map<string, unknown>
-    return Array.from(defaults.entries()).reduce((acc, [property, value]) => ({
-      ...acc,
-      [property]: {
-        value,
-        applyDecorators: false
-      }
-    }), {})
+    const defaults = Reflect.getMetadata(MetadataKeys.Defaults, this.Type.prototype) as Map<string, unknown> | undefined
+    return typeof defaults === 'object'
+      ? Array.from(defaults.entries()).reduce((acc, [property, value]) => ({
+        ...acc,
+        [property]: {
+          value,
+          applyDecorators: false
+        }
+      }), {})
+      : {}
   }
 
-  private transformProperty<T> (property: string, value: unknown, applyDecorators: boolean, typedProperties: Map<string, KindOfClass<T>>, acc: T): T {
+  private transformProperty<T>(property: string, value: unknown, applyDecorators: boolean, typedProperties: Map<string, KindOfClass<T>> | undefined, acc: T): T {
     let transformedPropertyName = property
     let nextValue = value
 
@@ -80,11 +82,12 @@ export class ImmutableEntityBuilder<T extends KindOfImmutableEntity> {
       transformedPropertyName = snakeToCamel(property) as string
     }
 
-    if (typedProperties.has(property)) {
-      const isImmutableEntity = Reflect.getMetadata(MetadataKeys.ImmutableEntity, typedProperties.get(property)?.prototype)
+    if (typedProperties?.has(property) === true) {
+      const isImmutableEntity = Reflect.getMetadata(MetadataKeys.ImmutableEntity, typedProperties.get(property) as unknown as Map<string, KindOfClass<T>>)
       const PropertyType = typedProperties.get(property) as KindOfClass<T>
       if (isImmutableEntity === true && typeof value === 'object') {
         const propertyBuilder = new ImmutableEntityBuilder(PropertyType, value as Record<string, unknown>)
+          .withOptions(this.options)
         nextValue = propertyBuilder.build()
       } else {
         nextValue = new PropertyType(value)
