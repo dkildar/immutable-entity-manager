@@ -1,10 +1,11 @@
-
+![Alt](https://github.com/dkildar/immutable-entity-manager/actions/workflows/main.yml/badge.svg)
+[![npm version](https://badge.fury.io/js/react-mitt-wrapper.svg)](https://badge.fury.io/js/immutable-entity-manager)
 # Immutable entites manager
 
 
 This initiative enables developers to leverage entities in Node.js projects, whether on the client side or in any other Node.js environment.
 
-## Installation
+## 🔨 Installation
 
 
 ```bash
@@ -14,7 +15,7 @@ npm install immutable-entity-manager
 yarn add immutable-entity-manager
 ```
 
-## Usage/Examples
+## 🗒️ Usage/Examples
 This package is built on the foundation of the manager and builder patterns. Each immutable entity has its own dedicated manager, designed to assist in data parsing. The manager, in turn, yields a builder class responsible for handling various tasks such as processing decorators, applying properties, and more.
 
 This package uses Typescript under-the-hood which means that it generates return type, properties name, etc.
@@ -42,7 +43,7 @@ expect(person.birthDate).toBeInstanceOf(Date)
 ```
 
 
-## API Reference
+## 📑 API Reference
 
 ### Decorators
 - `@ImmutableEntity` – mark a class as immutable entity;
@@ -82,7 +83,7 @@ Builder allow to choose conversion of properties: camel to snake or viceversa. `
 ```typescript
 builder.withOptions({ camelToSnakeCase: true })
 ```
-## Roadmap
+## 🙌 Roadmap
 
 - Add transformation of property before parsing or in `withProperty`;
 
