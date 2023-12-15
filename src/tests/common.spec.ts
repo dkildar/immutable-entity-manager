@@ -89,6 +89,7 @@ describe('Positive tests', () => {
         middle_name: '!',
         middleName: '!'
       })
+      .withOptions({ camelToSnakeCase: true })
       .build()
     expect(person.middleName).not.toBe('!')
   })

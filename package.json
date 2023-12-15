@@ -2,13 +2,18 @@
   "name": "immutable-entity-manager",
   "version": "1.0.0",
   "description": "This initiative enables developers to leverage entities in Node.js projects, whether on the client side or in any other Node.js environment.",
-  "main": "index.js",
   "author": "ildar.timerbaev <dkildar@gmail.com>",
   "repository": {
     "url": "https://github.com/dkildar/immutable-entity-manager"
   },
   "keywords": [
     "javascript  builder  typescript manager  entities  entity builder-pattern  entity-manager"
+  ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
   ],
   "license": "MIT",
   "devDependencies": {
