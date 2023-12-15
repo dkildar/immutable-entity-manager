@@ -1,8 +1,8 @@
-name: Master CI/CD
+name: Main CI/CD
 on:
   push:
     branches:
-      - master
+      - main
 jobs:
   tests:
     runs-on: ubuntu-latest
