@@ -1,9 +1,15 @@
 {
   "name": "immutable-entity-manager",
   "version": "1.0.0",
-  "description": "Immutable entity manager – is a utils package for managing data classes in JS/TS",
+  "description": "This initiative enables developers to leverage entities in Node.js projects, whether on the client side or in any other Node.js environment.",
   "main": "index.js",
   "author": "ildar.timerbaev <dkildar@gmail.com>",
+  "repository": {
+    "url": "https://github.com/dkildar/immutable-entity-manager"
+  },
+  "keywords": [
+    "javascript  builder  typescript manager  entities  entity builder-pattern  entity-manager"
+  ],
   "license": "MIT",
   "devDependencies": {
     "@jest/globals": "^29.7.0",
@@ -16,12 +22,14 @@
     "eslint-plugin-promise": "^6.0.0",
     "jest": "^29.7.0",
     "ts-jest": "^29.1.1",
+    "tsup": "^8.0.1",
     "typescript": "5.3.2"
   },
-  "dependencies": {
+  "peerDependencies": {
     "reflect-metadata": "^0.1.13"
   },
   "scripts": {
-    "test": "jest --coverage"
+    "build": "tsup",
+    "test": "jest"
   }
 }
