@@ -1,5 +1,5 @@
 ![Alt](https://github.com/dkildar/immutable-entity-manager/actions/workflows/main.yml/badge.svg)
-[![npm version](https://badge.fury.io/js/react-mitt-wrapper.svg)](https://badge.fury.io/js/immutable-entity-manager)
+[![npm version](https://badge.fury.io/js/immutable-entity-manager.svg)](https://badge.fury.io/js/immutable-entity-manager)
 # Immutable entites manager
 
 
